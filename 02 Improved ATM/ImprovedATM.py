@@ -1,7 +1,7 @@
 import datetime
 import random
 
-# In future, read database from file
+# User database
 database = {
     "seyi@bank.com": {
         "accountNum": 132166548,
@@ -23,13 +23,6 @@ database = {
         "firstname" : "Love",
         "lastname"  : "R",
         "balance"   : 1400
-        },
-    "d"            : {
-        "accountNum": 100000001,
-        "password"  : "k",
-        "firstname" : "d first",
-        "lastname"  : "d last",
-        "balance"   : 1500
         },
     }
 
@@ -100,7 +93,7 @@ def register():
     print("\n*** New account registration ***")
     firstname = input("Enter your first name: ")
     lastname = input("Enter your last name: ")
-    email = input("Enter your email: ")
+    email = input("Enter your email: ").casefold()
     password = input("Create your password: ")
 
     # Generate account number
@@ -108,7 +101,7 @@ def register():
 
     # Add new user to database
     database.update({email: {"firstname": firstname, "lastname": lastname, "accountNum": account_number,
-                             "password": password, "balance": 2000
+                             "password" : password, "balance": 2000
                              }
                      })
 
@@ -116,7 +109,7 @@ def register():
     print("\n======================\nRegistration complete!\nPlease save your account number for your records:")
     print("Email: {}".format(email))
     for key, value in database[email].items():
-        print("{0}: {1}".format(key, value))
+        print("{0}: {1}".format(key.capitalize(), value))
     print("======================\n")
 
 
@@ -134,10 +127,10 @@ def login():
 
     # Ask user for email
     print("\n*** Existing user login ***\n" + prevMenu)
-    user = input("Please enter your email: ")
+    user = input("Please enter your email: ").casefold()
 
     # Check if user wants to return to previous menu
-    if user.casefold() == "back":
+    if user == "back":
         print(returnMenu)
         return
 
@@ -213,9 +206,9 @@ def withdraw():
     if withdrawal_amount.isnumeric():
         withdrawal_amount = int(withdrawal_amount)
         if withdrawal_amount > database[CURRENT_USER]["balance"]:
-            print("\n" + "*"*52)
+            print("\n" + "*" * 52)
             print("*** Cannot withdraw more than available balance! ***")
-            print("*"*52)
+            print("*" * 52)
             withdraw()
         else:
             print("Retrieving ${:.2f}...\nPlease take your cash.\n".format(withdrawal_amount))
