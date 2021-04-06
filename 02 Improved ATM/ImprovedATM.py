@@ -4,24 +4,24 @@ import random
 # User database
 database = {
     "seyi@bank.com": {
-        "accountNum": 132166548,
-        "password"  : "passwordSeyi",
         "firstname" : "Seyi",
         "lastname"  : "Z",
+        "accountNum": 132166548,
+        "password"  : "passwordSeyi",
         "balance"   : 1200
         },
     "mike@bank.com": {
-        "accountNum": 465139548,
-        "password"  : "passwordMike",
         "firstname" : "Mike",
         "lastname"  : "R",
+        "accountNum": 465139548,
+        "password"  : "passwordMike",
         "balance"   : 1300
         },
     "love@bank.com": {
-        "accountNum": 654649116,
-        "password"  : "passwordLove",
         "firstname" : "Love",
         "lastname"  : "R",
+        "accountNum": 654649116,
+        "password"  : "passwordLove",
         "balance"   : 1400
         },
     }
@@ -41,13 +41,18 @@ bankOptions = [
     [1, "Withdrawal"],
     [2, "Cash Deposit"],
     [3, "Complaint"],
-    [4, "Logout"],
-    [5, "Logout and Exit"]
+    [4, "View Account Info"],
+    [5, "Change password"],
+    [6, "Logout"],
+    [7, "Logout and Exit"],
     ]
 
 # Previous menu statements
 returnMenu = "Returning to previous menu...\n"
 prevMenu = "Enter \"Back\" to return to previous menu.\n"
+
+# Invalid option statement
+invalidOption = "Invalid option. Please try again.\n"
 
 
 def welcome():
@@ -70,7 +75,7 @@ def welcome():
         if select_option.isnumeric():
             select_option = int(select_option)
         else:
-            print("*** Invalid menu selection. Please try again.\n")
+            print(invalidOption)
             continue
 
         # Choose action based on user selection
@@ -81,7 +86,7 @@ def welcome():
         elif select_option == 3:
             quit_atm()
         else:
-            print("Invalid option.")
+            print(invalidOption)
 
 
 def register():
@@ -106,11 +111,8 @@ def register():
                      })
 
     # Display registration results to user
-    print("\n======================\nRegistration complete!\nPlease save your account number for your records:")
-    print("Email: {}".format(email))
-    for key, value in database[email].items():
-        print("{0}: {1}".format(key.capitalize(), value))
-    print("======================\n")
+    print("\nRegistration complete!\nPlease save your account number for your records:")
+    display_account(email)
 
 
 def generate_account_number():
@@ -173,7 +175,7 @@ def bank_operations():
         if select_option.isnumeric():
             select_option = int(select_option)
         else:
-            print("*** Invalid menu selection. Please try again.")
+            print(invalidOption)
             continue
 
         # Choose action based on user selection
@@ -184,13 +186,17 @@ def bank_operations():
         elif select_option == 3:
             complaint()
         elif select_option == 4:
+            display_account(CURRENT_USER)
+        elif select_option == 5:
+            change_password()
+        elif select_option == 6:
             logout()
             break
-        elif select_option == 5:
+        elif select_option == 7:
             logout()
             quit_atm()
         else:
-            print("*** Invalid option selected; please try again.")
+            print(invalidOption)
 
 
 def withdraw():
@@ -257,6 +263,43 @@ def complaint():
         return
     elif complaint_entry != "back":
         print("Thank you for letting us know.\n")
+
+
+def display_account(user: str):
+    """
+    Displays account information.
+    :param user: The user to display account info for
+    """
+    print("======================")
+    print("Email: {}".format(user))
+    for key, value in database[user].items():
+        if key == "password":
+            continue
+        elif key == "balance":
+            value = "${:.2f}".format(value)
+        print("{0}: {1}".format(key.capitalize(), value))
+    print("======================\n")
+
+
+def change_password():
+    """
+    Allows user to change password.
+    """
+    print("\nChange user password.\n" + prevMenu)
+    current_pw = input("Enter current password: ")
+    if current_pw == "back":
+        print(returnMenu)
+        return
+    new_pw1 = input("Enter new password: ")
+    new_pw2 = input("Re-enter new password: ")
+
+    if current_pw == database[CURRENT_USER]["password"] and new_pw1 == new_pw2:
+        database[CURRENT_USER]["password"] = new_pw1
+        print("\n*** Password for {} has been updated!\n".format(CURRENT_USER))
+    else:
+        print("\n*** Error: Either current password is incorrect,"
+              "or new password entries did not match.\nPlease try again.\n")
+        change_password()
 
 
 def logout():
