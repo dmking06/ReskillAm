@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ department.name }} details</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'students/basic.css' %}" type="text/css">
+</head>
+<body>
+<h3>Students in {{ department.name }} Department:</h3>
+{% if department.student_set.all %}
+<ol>
+    {% for student in department.student_set.all %}
+    <li><a href="{% url 'students:student' student.id %}">{{ student.fullname }}</a></li>
+    {% endfor %}
+</ol>
+{% else %}
+<p>No students in this department.</p>
+{% endif %}
+<p></p>
+<p></p>
+<h3>Faculty in {{ department.name }} Department:</h3>
+{% if department.faculty_set.all %}
+<ol>
+    {% for faculty in department.faculty_set.all %}
+    <li><a href="{% url 'students:faculty' faculty.id %}">{{ faculty.name }}</a></li>
+    {% endfor %}
+</ol>
+{% elif department.faculty %}
+<ol>
+    <li><a href="{% url 'students:faculty' department.faculty.id %}">{{ department.faculty.name }}</a></li>
+</ol>
+{% else %}
+<p>No faculty in this department.</p>
+{% endif %}
+</body>
+</html>

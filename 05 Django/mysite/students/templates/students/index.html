@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Student List</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'students/basic.css' %}" type="text/css">
+</head>
+<body>
+<h3>Student List:</h3>
+{% if student_list %}
+<ul>
+    {% for student in student_list %}
+    <li><a href="{% url 'students:student' student.id %}">{{ student.fullname }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No data is available.</p>
+{% endif %}
+</body>
+</html>

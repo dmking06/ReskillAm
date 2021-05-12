@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ school.name }} details</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'students/basic.css' %}" type="text/css">
+</head>
+<body>
+<h3>Students attending {{ school.name }}:</h3>
+{% if school.student_set.all %}
+<ol>
+    {% for student in school.student_set.all %}
+    <li><a href="{% url 'students:student' student.id %}">{{ student.fullname }}</li>
+    {% endfor %}
+</ol>
+{% else %}
+<p>No students are currently attending.</p>
+{% endif %}
+</body>
+</html>

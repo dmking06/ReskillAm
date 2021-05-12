@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ certificate.name }} details</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'students/basic.css' %}" type="text/css">
+</head>
+<body>
+<h3>Students with {{ certificate.name }} Certificate:</h3>
+{% if certificate.student_set.all %}
+<ol>
+    {% for student in certificate.student_set.all %}
+    <li><a href="{% url 'students:student' student.id %}">{{ student.fullname }}</a></li>
+    {% endfor %}
+</ol>
+{% else %}
+<p>No students with this certificate.</p>
+{% endif %}
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Details for {{ student.fullname }}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'students/basic.css' %}" type="text/css">
+</head>
+<body>
+<table>
+    <tr>
+        <td>Student</td>
+        <td> {{ student.fullname }}</td>
+    </tr>
+    <tr>
+        <td>School</td>
+        <td><a href="{% url 'students:school' student.school.id %}">{{ student.school }}</a></td>
+    </tr>
+    <tr>
+        <td>Grade</td>
+        <td><a href="{% url 'students:grade' student.grade.id %}">{{ student.grade }}</a></td>
+    </tr>
+    <tr>
+        <td>Department</td>
+        <td><a href="{% url 'students:department' student.department.id %}">{{ student.department }}</a></td>
+    </tr>
+    <tr>
+        <td>Certificate</td>
+        <td><a href="{% url 'students:certificate' student.certificate.id %}">{{ student.certificate }}</a></td>
+    </tr>
+</table>
+</body>
+</html>
